@@ -14,6 +14,11 @@ JOIN payment_types USING(payment_type_id)
 JOIN customer_signups USING(customer_id);
 """
 ds.loc['telco'] = ['telco.csv','telco_churn',telco_sql]
+def getNewData(db,ds=ds):
+    db_name = ds.loc[db,'db_name']
+    sql = ds.loc[db,'sql']
+    return pd.read_sql(sql,get_db_url(db_name))
+
 
 def getData(db,ds=ds):
     """
@@ -28,13 +33,13 @@ def getData(db,ds=ds):
     If no CSV, retrieves dataset from Codeup DB and stores a local csv file
     """
     filename = ds.loc[db,'filename']
-    db_name = ds.loc[db,'db_name']
-    sql = ds.loc[db,'sql']
 
     if os.path.isfile(filename): #check if file exists in WD
-        return pd.read_csv(filename)
+        #grab data, set first column as index
+        return pd.read_csv(filename,index_col=[0])
     else: #Get data from SQL db
-        df = pd.read_sql(sql,get_db_url(db_name))
-        #write to disk:
+        df = getNewData(db)
+        #write to disk - writes index as col 0:
         df.to_csv(filename)
     return df
+
