@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from env import get_db_url
 
+#Populate dataframe with filenames, sql and databases for select datasets
 ind = ['titanic','iris','telco']
 ds = pd.DataFrame(index=ind,columns=['filename','db_name','sql'])
 ds.loc['titanic'] = ['titanic.csv','titanic_db',"""SELECT * FROM passengers;"""]
@@ -14,15 +15,31 @@ JOIN payment_types USING(payment_type_id)
 JOIN customer_signups USING(customer_id);
 """
 ds.loc['telco'] = ['telco.csv','telco_churn',telco_sql]
+
 def getNewData(db,ds=ds):
+    """
+    Returns Pandas dataframe of desired dataset.
+    Required Parameter: dataset name
+    Supported datasets: 
+      titanic
+      iris
+      telco
+    
+    Retrieves dataset from Codeup DB and stores a local csv file
+    """
     db_name = ds.loc[db,'db_name']
     sql = ds.loc[db,'sql']
-    return pd.read_sql(sql,get_db_url(db_name))
+    filename = ds.loc[db,'filename']
+    
+    df = pd.read_sql(sql,get_db_url(db_name))
+    #write to disk - writes index as col 0:
+    df.to_csv(filename)
+    return 
 
 
 def getData(db,ds=ds):
     """
-    Returns: Pandas dataframe of desired dataset
+    Returns: Pandas dataframe of desired dataset.
     Required Parameter: dataset name
     Supported datasets: 
       titanic
@@ -39,7 +56,5 @@ def getData(db,ds=ds):
         return pd.read_csv(filename,index_col=[0])
     else: #Get data from SQL db
         df = getNewData(db)
-        #write to disk - writes index as col 0:
-        df.to_csv(filename)
     return df
 
