@@ -39,6 +39,18 @@ def splitData(df,target,**kwargs):
 
 
 #### TITANIC DATASET ####
+
+##Imputing age function
+def impute_titanic_age(train,test,validate):
+    imputer = SimpleImputer(strategy='mean')
+    #fit train data to imputer, then transform train
+    train['age'] = imputer.fit_transform(train[['age']])
+    #transform test and validate
+    test['age'] = imputer.transform(test[['age']])
+    validate['age'] = imputer.transform(validate[['age']])
+    return train, test, validate
+
+##Outer prep function
 def prep_titanic(df,**kwargs):
     #Drop un-needed columns
     df.drop(inplace=True,columns=['pclass','passenger_id','embarked','deck'])
@@ -51,10 +63,11 @@ def prep_titanic(df,**kwargs):
     df.rename(columns={'class':'pclass'},inplace=True)
 
     #Now split the data:
-    target='churn'
+    target='survived'
     train, test, validate = splitData(df,target,**kwargs)
 
-    return train, test, validate
+    #Impute age and return datasets
+    return impute_titanic_age(train, test, validate)
 
 
 
