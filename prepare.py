@@ -113,8 +113,8 @@ def prep_telco(df,**kwargs):
     df['has_churned'] = df.churn.map({'Yes': 1, 'No': 0})   
 
     #ENCODE the other categorical columns
-    enc_col = ['gender', 'multiple_lines', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies']  
-    d_df = pd.get_dummies(df[enc_col],drop_first=False)
+    enc_col = ['gender', 'multiple_lines', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies','payment_type','contract_type','internet_service_type']  
+    d_df = pd.get_dummies(df[enc_col],drop_first=True)
     #concate to df
     df = pd.concat([df,d_df],axis=1)
 

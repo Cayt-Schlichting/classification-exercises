@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 # | actual dog    |         46 |         7  |
 # | actual cat    |         13 |         34 |
 
-#2
+# 2
 # I'm assuming this model is designed to identify cats
 # FP: The model predicted a cat, but it was actually a dog
 # FN: The model predicted it wasn't a cat, but it was
@@ -31,7 +31,7 @@ pd.crosstab(rd_df.model1,rd_df.actual)
 # Defect          8          2
 # No Defect       8        182
 
-## IMPROVEMENTS TO MAKE:
+# # IMPROVEMENTS TO MAKE:
 # drop into a function
 # put results in df
 # print df
@@ -45,7 +45,7 @@ for i in rd_df.columns[1:]:
     print(f'FN: {fn}   TN: {tn}')
     recall = tp/(tp+fn)
     precision = tp/(tp+fp)
-    acc = (tp +tn)/cm.sum()
+    acc = (tp +tn)/(tn+tp+fn+fp)
     specificity = tn/(fp+tn)
     npv = tn/(tn+fn)
     f1 = stats.harmonic_mean([precision,recall])
@@ -85,7 +85,7 @@ for i in rd_df.columns[1:]:
 # NPV: 0.9702970297029703
 # F1 score: 0.22608695652173913
 
-#3b) if the goal is to minimize vacation packages for non-defective ducks, 
+# 3b) if the goal is to minimize vacation packages for non-defective ducks, 
 # then we want to minimize False Negative 
 
 # ANS: Both times we want to minimize false negatives and therefore have  high recall.
@@ -108,60 +108,6 @@ for i in cd.columns[1:]:
 #     The model with the highest precision for cats is model 4, so I would choose that for phase I
 #     However, model 4 is less accurate than model 1, so I would choose model 1 for phase II
 
-# model1
-#               precision    recall  f1-score   support
-
-#          cat       0.69      0.82      0.75      1746
-#          dog       0.89      0.80      0.84      3254
-
-#     accuracy                           0.81      5000
-#    macro avg       0.79      0.81      0.80      5000
-# weighted avg       0.82      0.81      0.81      5000
-
-
-# model2
-#               precision    recall  f1-score   support
-
-#          cat       0.48      0.89      0.63      1746
-#          dog       0.89      0.49      0.63      3254
-
-#     accuracy                           0.63      5000
-#    macro avg       0.69      0.69      0.63      5000
-# weighted avg       0.75      0.63      0.63      5000
-
-
-# model3
-#               precision    recall  f1-score   support
-
-#          cat       0.36      0.51      0.42      1746
-#          dog       0.66      0.51      0.57      3254
-
-#     accuracy                           0.51      5000
-#    macro avg       0.51      0.51      0.50      5000
-# weighted avg       0.55      0.51      0.52      5000
-
-
-# model4
-#               precision    recall  f1-score   support
-
-#          cat       0.81      0.35      0.48      1746
-#          dog       0.73      0.96      0.83      3254
-
-#     accuracy                           0.74      5000
-#    macro avg       0.77      0.65      0.66      5000
-# weighted avg       0.76      0.74      0.71      5000
-
-
-# baseline
-#               precision    recall  f1-score   support
-
-#          cat       0.00      0.00      0.00      1746
-#          dog       0.65      1.00      0.79      3254
-
-#     accuracy                           0.65      5000
-#    macro avg       0.33      0.50      0.39      5000
-# weighted avg       0.42      0.65      0.51      5000
-
 #5) 
 # classification_report already used above.
 for i in cd.columns[1:]:
@@ -175,23 +121,3 @@ for i in cd.columns[1:]:
 # accuracy: 0.8074
 # precision: 0.8900238338440586
 # recall: 0.803318992009834
-
-# model2
-# accuracy: 0.6304
-# precision: 0.8931767337807607
-# recall: 0.49078057775046097
-
-# model3
-# accuracy: 0.5096
-# precision: 0.6598883572567783
-# recall: 0.5086047940995697
-
-# model4
-# accuracy: 0.7426
-# precision: 0.7312485304490948
-# recall: 0.9557467732022127
-
-# baseline
-# accuracy: 0.6508
-# precision: 0.6508
-# recall: 1.0
